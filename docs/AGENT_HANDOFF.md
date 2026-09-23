@@ -58,7 +58,13 @@ Added inline buttons to `/start`, callback-query routing for:
 
 Verified that About lab and Mock offer open detail views, Back returns to the main menu, and callback loading clears.
 
-Note: `docs/implementation-log/m1-implementation-log.md` may still show `Commit: Pending` for `m1.f3`; update that later as part of a normal work commit if desired.
+Implementation log commit hash has been filled as `8a94f55`.
+
+### m1.f4.event_inspection
+
+Verified, commit pending.
+
+Standardized safe logs around `event=` and `outcome=` fields for startup, commands, text messages, callbacks, callback outcomes, unsupported callback data, and handler errors. Verified `/start`, `/help`, ordinary text, and inline buttons still work and logs do not include token values or message text.
 
 ## Current code shape
 
@@ -70,36 +76,42 @@ Note: `docs/implementation-log/m1-implementation-log.md` may still show `Commit:
     - `/help`
     - callback handler for `^menu:`
     - normal text handler
+    - application error handler
   - Runs long polling
+  - Logs startup as `event=bot.startup outcome=starting mode=long_polling`
 
 - `app/handlers.py`
+  - `log_update_event()`
   - `build_main_menu()`
   - `build_back_menu()`
   - `start()`
   - `help_command()`
   - `echo_text()`
   - `handle_menu_callback()`
+  - `handle_error()`
 
 - `app/logging_config.py`
   - Basic `logging.basicConfig(...)` setup
 
 ## Next feature
 
-Next planned feature: `m1.f4.event_inspection`.
+Next planned feature: `m1.f5.reliability_and_edge_cases`.
 
-Purpose: improve logs so startup, commands, ordinary messages, callbacks, and handler outcomes are easier to recognize and remain safe.
+Purpose: handle unknown commands, unexpected callback data, repeated button presses, missing optional update fields, and graceful shutdown/restart checks.
 
-Planner source: Milestone 1.4 in `docs/telegram-experiment-01-implementation-plan.md`.
+Planner source: Milestone 1.5 in `docs/telegram-experiment-01-implementation-plan.md`.
 
 Expected scope:
 
-- Add structured logs for startup, commands, messages, callbacks, and handler errors.
-- Include timestamp, event type, update ID, relevant Telegram IDs, and handler outcome.
-- Continue avoiding token values, message text, and unnecessary personal data.
+- Handle unknown commands safely.
+- Confirm unsupported callback data is handled safely.
+- Confirm repeated button presses do not crash the bot.
+- Keep or improve application-level error handling.
+- Restart the app and confirm polling and handlers resume normally.
 
 Suggested first small step:
 
-Inspect existing logging in `app/handlers.py` and introduce a small helper for safe Telegram IDs or event logging, without changing bot behavior yet.
+Add an unknown-command handler in `app/handlers.py`, then register it in `app/main.py` after known command handlers and before the text handler.
 
 ## Verification style
 

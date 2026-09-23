@@ -10,7 +10,13 @@ from telegram.ext import (
     filters,
 )
 
-from app.handlers import echo_text, handle_menu_callback, help_command, start
+from app.handlers import (
+    echo_text,
+    handle_error,
+    handle_menu_callback,
+    help_command,
+    start,
+)
 from app.logging_config import configure_logging
 
 logger = logging.getLogger(__name__)
@@ -37,7 +43,8 @@ def main() -> None:
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CallbackQueryHandler(handle_menu_callback, pattern="^menu:"))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo_text))
-    logger.info("Bot application starting with long polling")
+    application.add_error_handler(handle_error)
+    logger.info("event=bot.startup outcome=starting mode=long_polling")
     application.run_polling()
 
 

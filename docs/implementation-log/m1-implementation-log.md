@@ -66,8 +66,8 @@
 
 ## m1.f3.interactive_buttons
 
-**Status:** Verified, commit pending
-**Commit:** Pending
+**Status:** Committed
+**Commit:** `8a94f55`
 
 **What we built:** Added an inline menu to `/start` with About lab and Mock offer actions, plus a Back action for returning to the main menu.
 
@@ -88,5 +88,33 @@
 **Verification:** The bot was run locally. `/start` displayed About lab and Mock offer buttons. About lab and Mock offer each opened the intended detail view with a Back button. Back returned to the main menu. Console logs showed callback events with the expected callback data values.
 
 **How to confirm later:** Run `python -m app.main`, send `/start` to `@alaud_campaign_bot`, tap About lab, Back, Mock offer, and Back, then confirm the message updates and button loading clears each time.
+
+**Open issues:** None for this feature.
+
+## m1.f4.event_inspection
+
+**Status:** Verified, commit pending
+**Commit:** Pending
+
+**What we built:** Standardized bot logs around `event=` and `outcome=` fields for startup, commands, ordinary messages, callbacks, callback outcomes, unsupported callback data, and application-level handler errors.
+
+**Why this was needed:** Experiment 1 requires recognizable structured events without leaking credentials or unnecessary personal data. These logs make it easier to inspect the bot's behavior while keeping the output safe.
+
+**Concepts learned:** A shared logging helper can extract safe Telegram identifiers from an update and keep each handler's log shape consistent. Application error handlers catch exceptions raised by bot handlers and record sanitized error types.
+
+**Technology notes:** `log_update_event()` records event type, outcome, update ID, user ID, chat ID, message ID, and explicit safe details such as callback data or target screen. `application.add_error_handler(handle_error)` registers the sanitized error handler.
+
+**Code meaning:** `app/handlers.py` now logs `received` and `replied` outcomes for commands/messages, `received` and `edited` outcomes for callbacks, and `failed` outcomes for handler errors. `app/main.py` logs structured startup and registers the error handler.
+
+**Files changed:**
+- `README.md`
+- `app/handlers.py`
+- `app/main.py`
+- `docs/implementation-log/m1-implementation-log.md`
+- `docs/AGENT_HANDOFF.md`
+
+**Verification:** The bot was run locally. `/start`, `/help`, ordinary text, About lab, Back, Mock offer, and Back all still worked. Logs showed structured `event=` and `outcome=` fields for startup, commands, text messages, callbacks, and callback edit outcomes without printing the bot token or message text.
+
+**How to confirm later:** Run `python -m app.main`, exercise `/start`, `/help`, ordinary text, and the inline buttons, then confirm logs include `event=bot.startup`, `event=command.start`, `event=command.help`, `event=message.text`, and `event=callback.menu`.
 
 **Open issues:** None for this feature.

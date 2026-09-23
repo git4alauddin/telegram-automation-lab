@@ -45,5 +45,6 @@ Open Telegram and send `/start` to your test bot.
 - Ordinary text receives a basic response.
 - `/start` shows inline menu buttons for About lab and Mock offer.
 - Inline menu buttons open detail views, and Back returns to the main menu.
+- Logs use `event=` and `outcome=` fields for startup, commands, messages, callbacks, and errors.
 - Logs include update ID, user ID, chat ID, and message ID where available.
 - The bot token and message text are never printed.
