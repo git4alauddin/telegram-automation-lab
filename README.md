@@ -43,5 +43,7 @@ Open Telegram and send `/start` to your test bot.
 - `/start` receives a reply in a private chat.
 - `/help` receives a distinct command-list reply.
 - Ordinary text receives a basic response.
+- `/start` shows inline menu buttons for About lab and Mock offer.
+- Inline menu buttons open detail views, and Back returns to the main menu.
 - Logs include update ID, user ID, chat ID, and message ID where available.
 - The bot token and message text are never printed.

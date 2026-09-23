@@ -63,3 +63,30 @@
 **How to confirm later:** Run `python -m app.main`, send `/start`, `/help`, and an ordinary text message to `@alaud_campaign_bot`, then confirm each receives the expected reply and logs do not include message text.
 
 **Open issues:** None for this feature.
+
+## m1.f3.interactive_buttons
+
+**Status:** Verified, commit pending
+**Commit:** Pending
+
+**What we built:** Added an inline menu to `/start` with About lab and Mock offer actions, plus a Back action for returning to the main menu.
+
+**Why this was needed:** Experiment 1 requires interactive buttons and callback-query routing. This gives the bot a small menu flow before later experiments add richer engagement and offer tracking.
+
+**Concepts learned:** Inline buttons display user-facing labels but send private `callback_data` values back to the bot. `CallbackQueryHandler` routes those button taps, and `await query.answer()` clears Telegram's loading indicator.
+
+**Technology notes:** Callback data is filtered with the `^menu:` pattern in `app/main.py`. The callback handler edits the existing message instead of sending a new message, keeping the menu interaction tidy.
+
+**Code meaning:** `build_main_menu()` creates the two main buttons, `build_back_menu()` creates the Back button, and `handle_menu_callback()` routes `menu:about`, `menu:offer`, and `menu:back`.
+
+**Files changed:**
+- `README.md`
+- `app/handlers.py`
+- `app/main.py`
+- `docs/implementation-log/m1-implementation-log.md`
+
+**Verification:** The bot was run locally. `/start` displayed About lab and Mock offer buttons. About lab and Mock offer each opened the intended detail view with a Back button. Back returned to the main menu. Console logs showed callback events with the expected callback data values.
+
+**How to confirm later:** Run `python -m app.main`, send `/start` to `@alaud_campaign_bot`, tap About lab, Back, Mock offer, and Back, then confirm the message updates and button loading clears each time.
+
+**Open issues:** None for this feature.
