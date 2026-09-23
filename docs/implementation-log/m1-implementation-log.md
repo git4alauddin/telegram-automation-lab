@@ -37,3 +37,29 @@
 **How to confirm later:** Activate the virtual environment, run `python -m app.main`, send `/start` to `@alaud_campaign_bot`, and confirm the reply plus sanitized console log.
 
 **Open issues:** None for this feature. Milestone 1.1 can continue with any remaining setup/readability checks before moving to commands and messages.
+
+## m1.f2.commands_and_messages
+
+**Status:** Committed
+**Commit:** `6eaf971`
+
+**What we built:** Added a `/help` command with a distinct command-list reply and a normal text-message handler that responds separately from slash commands.
+
+**Why this was needed:** The bot now has the basic command and message behavior required for Experiment 1. This separates command handling from ordinary user conversation before we add interactive buttons.
+
+**Concepts learned:** `CommandHandler` routes slash commands like `/start` and `/help`. `MessageHandler(filters.TEXT & ~filters.COMMAND, echo_text)` catches ordinary text while excluding slash commands, so each kind of update can have its own response and log event.
+
+**Technology notes:** The bot still uses long polling. Handler logs remain sanitized by recording update ID, user ID, chat ID, and message ID where available, without logging token values or message text.
+
+**Code meaning:** `app/handlers.py` now contains `help_command` and `echo_text`. `app/main.py` imports those handlers and registers `/help` plus the text-message filter after the `/start` handler.
+
+**Files changed:**
+- `README.md`
+- `app/handlers.py`
+- `app/main.py`
+
+**Verification:** The bot was run locally. `/start` returned the original connected message, `/help` returned the command list, and ordinary text returned the safe basic response. Console logs showed command and text event types with Telegram IDs only.
+
+**How to confirm later:** Run `python -m app.main`, send `/start`, `/help`, and an ordinary text message to `@alaud_campaign_bot`, then confirm each receives the expected reply and logs do not include message text.
+
+**Open issues:** None for this feature.
