@@ -121,8 +121,8 @@
 
 ## m1.f5.reliability_and_edge_cases
 
-**Status:** Verified, commit pending
-**Commit:** Pending
+**Status:** Committed
+**Commit:** `85f18e3`
 
 **What we built:** Added an unknown-command handler and verified the reliability edge cases required for the end of Experiment 1.
 
