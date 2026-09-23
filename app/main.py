@@ -16,6 +16,7 @@ from app.handlers import (
     handle_menu_callback,
     help_command,
     start,
+    unknown_command,
 )
 from app.logging_config import configure_logging
 
@@ -41,6 +42,7 @@ def main() -> None:
     application = Application.builder().token(token).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
+    application.add_handler(MessageHandler(filters.COMMAND, unknown_command))
     application.add_handler(CallbackQueryHandler(handle_menu_callback, pattern="^menu:"))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo_text))
     application.add_error_handler(handle_error)

@@ -67,6 +67,15 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     log_update_event("command.help", update, "replied")
 
 
+async def unknown_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    log_update_event("command.unknown", update, "received")
+
+    await update.message.reply_text(
+        "Sorry, I do not recognize that command. Use /help to see available commands."
+    )
+    log_update_event("command.unknown", update, "replied")
+
+
 async def echo_text(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     log_update_event("message.text", update, "received")
 

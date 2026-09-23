@@ -62,9 +62,15 @@ Implementation log commit hash has been filled as `8a94f55`.
 
 ### m1.f4.event_inspection
 
-Verified, commit pending.
+Committed as `d3dd5ed`.
 
 Standardized safe logs around `event=` and `outcome=` fields for startup, commands, text messages, callbacks, callback outcomes, unsupported callback data, and handler errors. Verified `/start`, `/help`, ordinary text, and inline buttons still work and logs do not include token values or message text.
+
+### m1.f5.reliability_and_edge_cases
+
+Verified, commit pending.
+
+Added an unknown-command fallback for unsupported slash commands. Verified `/unknown`, repeated button presses, restart recovery, and unsupported callback data via a local synthetic `menu:bad` callback check.
 
 ## Current code shape
 
@@ -74,6 +80,7 @@ Standardized safe logs around `event=` and `outcome=` fields for startup, comman
   - Registers:
     - `/start`
     - `/help`
+    - unknown command fallback
     - callback handler for `^menu:`
     - normal text handler
     - application error handler
@@ -86,6 +93,7 @@ Standardized safe logs around `event=` and `outcome=` fields for startup, comman
   - `build_back_menu()`
   - `start()`
   - `help_command()`
+  - `unknown_command()`
   - `echo_text()`
   - `handle_menu_callback()`
   - `handle_error()`
@@ -95,23 +103,23 @@ Standardized safe logs around `event=` and `outcome=` fields for startup, comman
 
 ## Next feature
 
-Next planned feature: `m1.f5.reliability_and_edge_cases`.
+Next planned step: Experiment 1 definition-of-done review.
 
-Purpose: handle unknown commands, unexpected callback data, repeated button presses, missing optional update fields, and graceful shutdown/restart checks.
+Purpose: confirm all Experiment 1 checklist items and get student approval before moving to Experiment 2.
 
-Planner source: Milestone 1.5 in `docs/telegram-experiment-01-implementation-plan.md`.
+Planner source: Definition of done in `docs/telegram-experiment-01-implementation-plan.md`.
 
 Expected scope:
 
-- Handle unknown commands safely.
-- Confirm unsupported callback data is handled safely.
-- Confirm repeated button presses do not crash the bot.
-- Keep or improve application-level error handling.
-- Restart the app and confirm polling and handlers resume normally.
+- Review the Experiment 1 manual checklist.
+- Confirm README setup/run instructions are still accurate.
+- Confirm no secrets are committed.
+- Confirm `git status --short` is clean after the student commit.
+- Ask the student before starting Experiment 2.
 
 Suggested first small step:
 
-Add an unknown-command handler in `app/handlers.py`, then register it in `app/main.py` after known command handlers and before the text handler.
+After the student commits `m1.f5`, inspect `git status --short`, `git log --oneline -5`, and the Experiment 1 checklist, then propose the final definition-of-done review.
 
 ## Verification style
 
