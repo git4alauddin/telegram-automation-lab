@@ -41,5 +41,7 @@ Open Telegram and send `/start` to your test bot.
 
 - The terminal shows a non-sensitive startup log.
 - `/start` receives a reply in a private chat.
-- Logs include Telegram IDs needed for debugging.
-- The bot token is never printed.
+- `/help` receives a distinct command-list reply.
+- Ordinary text receives a basic response.
+- Logs include update ID, user ID, chat ID, and message ID where available.
+- The bot token and message text are never printed.

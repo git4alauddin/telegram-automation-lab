@@ -2,9 +2,9 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from telegram.ext import Application, CommandHandler
+from telegram.ext import Application, CommandHandler, MessageHandler, filters
 
-from app.handlers import start
+from app.handlers import echo_text, help_command, start
 from app.logging_config import configure_logging
 
 logger = logging.getLogger(__name__)
@@ -28,7 +28,8 @@ def main() -> None:
 
     application = Application.builder().token(token).build()
     application.add_handler(CommandHandler("start", start))
-
+    application.add_handler(CommandHandler("help", help_command))
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo_text))
     logger.info("Bot application starting with long polling")
     application.run_polling()
 
